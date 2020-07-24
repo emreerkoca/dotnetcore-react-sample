@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace App.Infrastructure.Data
 {
-    public class EfRepository<T> : IAsyncRepository<T> where T : BaseEntity
+    public class EfRepository<T> : IRepository<T> where T : BaseEntity
     {
         protected readonly AppDbContext _appDbContext;
 
@@ -30,6 +30,11 @@ namespace App.Infrastructure.Data
             var saveResult = await _appDbContext.SaveChangesAsync();
 
             return saveResult == 1;
+        }
+
+        public T GetById(int id)
+        {
+            return _appDbContext.Set<T>().Find(id);
         }
 
         public virtual ValueTask<T> GetByIdAsync(int id)

@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace App.Core.Interfaces
 {
-    public interface IAsyncRepository<T> 
+    public interface IRepository<T> 
     {
+        T GetById(int id);
         ValueTask<T> GetByIdAsync(int id);
         Task<IReadOnlyList<T>> GetListAllAsync();
         Task<T> AddAsync(T entity);
