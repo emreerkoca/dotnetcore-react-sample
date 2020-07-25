@@ -28,7 +28,10 @@ namespace App.Web.Controllers
         [HttpPost("add-product")]
         public async Task<IActionResult> AddProduct([FromBody] Product product)
         {
-            product.isDeleted = false;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
             var result = await _productRepository.AddAsync(product);
 
@@ -104,12 +107,45 @@ namespace App.Web.Controllers
         [HttpPost("add-product-tag")]
         public async Task<IActionResult> AddProductTag([FromBody] ProductTag productTag)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var result = await _productTagRepository.AddAsync(productTag);
 
             if (result == null)
             {
                 return BadRequest("Could not add!");
             }
+
+            return Ok(productTag);
+        }
+
+        [HttpDelete("delete-product-tag/{productTagId}")]
+        public async Task<IActionResult> DeleteProductTag(int productTagId)
+        {
+            ProductTag productTag = _productTagRepository.GetById(productTagId);
+
+            await _productTagRepository.DeleteAsync(productTag);
+
+            return Ok("1");
+        }
+
+        [HttpPut("update-product-tag/{productTagId}")]
+        public async Task<IActionResult> UpdateProductTag([FromRoute] int productTagId, [FromBody] ProductTag productTag)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (productTagId != productTag.Id)
+            {
+                return BadRequest();
+            }
+
+            await _productTagRepository.UpdateAsync(productTag);
 
             return Ok(productTag);
         }
