@@ -14,15 +14,22 @@ namespace App.Web.Controllers
     public class ProductController : ControllerBase
     {
         IProductRepository _productRepository;
+        IRepository<Tag> _tagRepository;
+        IRepository<ProductTag> _productTagRepository;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IRepository<Tag> tagRepository, IRepository<ProductTag> productTagRepository, IProductRepository productRepository)
         {
+            _tagRepository = tagRepository;
+            _productTagRepository = productTagRepository;
             _productRepository = productRepository;
+
         }
 
         [HttpPost("add-product")]
         public async Task<IActionResult> AddProduct([FromBody] Product product)
         {
+            product.isDeleted = false;
+
             var result = await _productRepository.AddAsync(product);
 
             if (result == null)
@@ -74,6 +81,37 @@ namespace App.Web.Controllers
             await _productRepository.UpdateAsync(deletedProduct);
 
             return Ok("1");
+        }
+
+        [HttpPost("add-tag")]
+        public async Task<IActionResult> AddTag([FromBody] Tag tag)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _tagRepository.AddAsync(tag);
+
+            if (result == null)
+            {
+                return BadRequest("Could not add!");
+            }
+
+            return Ok(tag);
+        }
+
+        [HttpPost("add-product-tag")]
+        public async Task<IActionResult> AddProductTag([FromBody] ProductTag productTag)
+        {
+            var result = await _productTagRepository.AddAsync(productTag);
+
+            if (result == null)
+            {
+                return BadRequest("Could not add!");
+            }
+
+            return Ok(productTag);
         }
     }
 }

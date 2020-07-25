@@ -19,7 +19,9 @@ namespace App.Infrastructure.Data
 
         public async Task<T> AddAsync(T entity)
         {
-            await _appDbContext.Set<T>().AddAsync(entity);
+            _appDbContext.Set<T>().Add(entity);
+
+            await _appDbContext.SaveChangesAsync();
 
             return entity;
         }

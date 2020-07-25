@@ -18,7 +18,7 @@ namespace App.Infrastructure.Data
 
         public async Task<IReadOnlyList<Product>> GetProducts()
         {
-            return await _appDbContext.Product.Where(x => x.isDeleted).ToListAsync();
+            return await _appDbContext.Product.Where(x => !x.isDeleted).ToListAsync();
         }
     }
 }
