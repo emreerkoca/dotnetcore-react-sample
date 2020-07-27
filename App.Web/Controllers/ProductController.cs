@@ -86,6 +86,19 @@ namespace App.Web.Controllers
             return Ok("1");
         }
 
+        [HttpGet("get-tags")]
+        public async Task<IActionResult> GetTags()
+        {
+            IReadOnlyList<Tag> tagList = await _tagRepository.GetListAllAsync();
+
+            if (tagList == null)
+            {
+                return BadRequest("Could not get tags");
+            }
+
+            return Ok(tagList);
+        }
+
         [HttpPost("add-tag")]
         public async Task<IActionResult> AddTag([FromBody] Tag tag)
         {
