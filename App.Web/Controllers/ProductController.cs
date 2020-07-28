@@ -56,6 +56,19 @@ namespace App.Web.Controllers
             return Ok(productList);
         }
 
+        [HttpGet("get-product/{productId}")]
+        public async Task<IActionResult> GetProduct(int productId)
+        {
+            Product product = await _productRepository.GetByIdAsync(productId);
+
+            if (product == null)
+            {
+                return BadRequest("Could not get product!");
+            }
+
+            return Ok(product);
+        }
+
         [HttpPut("update-product/{productId}")]
         public async Task<IActionResult> UpdateProduct([FromRoute] int productId, [FromBody] Product updatedProduct)
         {

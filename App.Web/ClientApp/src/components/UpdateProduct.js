@@ -63,7 +63,7 @@ export default class UpdateProduct extends React.Component {
             product: {
                 id: this.state.product.id,
                 name: this.state.product.name,
-                price: e.target.value
+                price: parseFloat(e.target.value)
             }
         });
     }
@@ -79,6 +79,9 @@ export default class UpdateProduct extends React.Component {
             },
             body: JSON.stringify(this.state.product)
           };
+
+          console.log("requeest options");
+          console.log(requestOptions);
     
           fetch('api/product/update-product/' + this.props.productId, requestOptions)
             .then(response => response.json())
@@ -103,11 +106,11 @@ export default class UpdateProduct extends React.Component {
                     <form onSubmit={this.handleSubmit} >
                     <div className="form-element">
                     <input type="text" id="productName" value={product.name} 
-                        onChange={this.handleProductNameChange} className="col-md-3 col-xs-12" placeholder="Name"/>
+                        onChange={this.handleProductNameChange} placeholder="Name"/>
                     </div>
                     <div className="form-element">
-                    <textarea type="text" id="productPrice" value={product.price} 
-                        onChange={this.handleProductPriceChange} className="col-md-3 col-xs-12" placeholder="Price" />
+                    <input type="number" id="productPrice" value={product.price} 
+                        onChange={this.handleProductPriceChange} placeholder="Price" />
                     </div>
                     <div className="form-actions row">
                     <input type="button" onClick={this.handleGetProducts} value="Back to Products"/>

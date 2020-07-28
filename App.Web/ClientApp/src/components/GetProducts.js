@@ -143,8 +143,7 @@ export class GetProducts extends Component {
         );
       } else if (updateState) {
         return (
-          <UpdateProduct productId={productId} ></UpdateProduct>
-          //  handleGetProducts={this.getProducts}
+          <UpdateProduct productId={productId} handleGetProducts={this.getProducts} ></UpdateProduct>
         );
       }
       
