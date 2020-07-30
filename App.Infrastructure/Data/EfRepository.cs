@@ -17,7 +17,7 @@ namespace App.Infrastructure.Data
             _appDbContext = appDbContext;
         }
 
-        public async Task<T> AddAsync(T entity)
+        public async ValueTask<T> AddAsync(T entity)
         {
             _appDbContext.Set<T>().Add(entity);
 

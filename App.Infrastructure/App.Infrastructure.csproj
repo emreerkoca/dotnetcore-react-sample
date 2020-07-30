@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200725121445_Added-Product-Tag-Table.cs" />
-    <Compile Remove="Migrations\20200725121445_Added-Product-Tag-Table.Designer.cs" />
+    <Compile Remove="Migrations\20200730193646_UpdateForProductTag.cs" />
+    <Compile Remove="Migrations\20200730193646_UpdateForProductTag.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

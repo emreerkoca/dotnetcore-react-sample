@@ -2,10 +2,38 @@
 
 namespace App.Infrastructure.Migrations
 {
-    public partial class AddedProductTagTable : Migration
+    public partial class UpdateEntities : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Product",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: false),
+                    Price = table.Column<float>(nullable: false),
+                    isDeleted = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tag",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tag", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "ProductTag",
                 columns: table => new
@@ -48,6 +76,12 @@ namespace App.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "ProductTag");
+
+            migrationBuilder.DropTable(
+                name: "Product");
+
+            migrationBuilder.DropTable(
+                name: "Tag");
         }
     }
 }

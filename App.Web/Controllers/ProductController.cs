@@ -33,14 +33,14 @@ namespace App.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            var result = await _productRepository.AddAsync(product);
+            Product productResult = await _productRepository.AddAsync(product);
 
-            if (result == null)
+            if (productResult == null)
             {
                 return BadRequest("Could not add!");
             }
 
-            return Ok(product);
+            return Ok(productResult);
         }
 
         [HttpGet("get-products")]
