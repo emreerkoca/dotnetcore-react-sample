@@ -20,5 +20,7 @@ namespace App.Infrastructure.Data
         {
             return await _appDbContext.Product.Where(x => !x.isDeleted).ToListAsync();
         }
+
+
     }
 }

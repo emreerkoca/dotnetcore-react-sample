@@ -10,6 +10,7 @@ namespace App.Core.Interfaces
         T GetById(int id);
         ValueTask<T> GetByIdAsync(int id);
         Task<IReadOnlyList<T>> GetListAllAsync();
+        Task<IReadOnlyList<T>> GetListByIdAsync(int id);
         ValueTask<T> AddAsync(T entity);
         Task<bool> UpdateAsync(T entity);
         Task<bool> DeleteAsync(T entity);

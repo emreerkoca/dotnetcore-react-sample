@@ -175,5 +175,18 @@ namespace App.Web.Controllers
 
             return Ok(productTag);
         }
+
+        [HttpGet("get-product-tags/productId")]
+        public async Task<IActionResult> GetProductTags(int productId)
+        {
+            IReadOnlyList<ProductTag> productTagList = await _productTagRepository.GetListByIdAsync(productId);
+
+            if (productTagList == null)
+            {
+                return BadRequest("Could not get product tags");
+            }
+
+            return Ok(productTagList);
+        }
     }
 }

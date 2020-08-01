@@ -10,6 +10,7 @@ namespace App.Core.Entities
     {
         public int ProductId { get; set; }
         public int TagId { get; set; }
+        public string TagName { get; set; }
         public string  TagValue { get; set; }
     }
 }
