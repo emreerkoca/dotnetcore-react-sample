@@ -41,8 +41,9 @@ export class AddProduct extends Component {
             name: this.state.name,
             price: parseFloat(this.state.price)
         });
-  
-        fetch('api/product/add-product', AddProduct.requestOptions)
+
+        if (!this.state.isAdded) {
+            fetch('api/product/add-product', AddProduct.requestOptions)
             .then(response => response.json())
             .then(
               (result) => {
@@ -59,6 +60,32 @@ export class AddProduct extends Component {
                 console.log(error);
             }
           );
+        }
+        else {
+            AddProduct.requestOptions.method = "PUT";
+
+            var requestBody = JSON.parse(AddProduct.requestOptions.body);
+
+            requestBody.id = this.state.id;
+
+            AddProduct.requestOptions.body = JSON.stringify(requestBody);
+
+            console.log(AddProduct.requestOptions);
+
+            fetch('api/product/update-product/' + this.state.id, AddProduct.requestOptions)
+                .then(response => response.json())
+                .then(
+                (result) => {
+                    console.log("Product updated!");
+                    console.log(result);
+                },
+                (error) => {
+                    console.log(error);
+                }
+          );
+        }
+  
+        
     }
 
     handleAddTagFormSubmit(e) {
@@ -79,13 +106,7 @@ export class AddProduct extends Component {
 
                 productTags.push(result);
 
-                console.log("product tags:");
-                console.log(productTags);
-
                 this.setState({productTags: productTags });
-
-                console.log("statate prod tags");
-                console.log(this.state.productTags);
           },
           (error) => {
               console.log(error);
@@ -118,7 +139,7 @@ export class AddProduct extends Component {
                         onChange={this.handleProductPriceChange} placeholder="Price" />
                     </div>
                     <div className="form-actions row">
-                    <input type="submit" id="submit" className="btn btn-primary" value="Add"/>
+                    <input type="submit" id="submit" className="btn btn-primary" value={this.state.isAdded ? "Update" : "Add" }/>
                     </div>
                 </form>
                 { this.state.productTags.length > 0 && 
@@ -137,28 +158,29 @@ export class AddProduct extends Component {
                                 )}
                             </tbody>
                         </table>
-                      
                     </div>
                 }
                 { this.state.isAdded && 
                 <div>
                 <form onSubmit={this.handleAddTagFormSubmit}>
                         <div className="form-element">
-                        <select value={this.state.selectedTag }
-                                onChange={(e) => {
-                                    this.setState({ selectedTag: parseInt(e.target.value),
-                                        selectedTagName: e.nativeEvent.target[e.nativeEvent.target.selectedIndex].text,
-                                        validationError: e.target.value === '' ? 'Select Tag' : ''});                                    
-                                }}>
-                            {this.state.tags.map((tag) => <option key={tag.id} value={tag.id}>{tag.name}</option>)}
-                        </select>
-                        <div style={{color: 'red', marginTop: '5px'}}>
-                            {this.state.validationError}
-                        </div>
+                            <label>Add Product Property (Color, Size, etc)</label>
+                            <br />
+                            <select value={this.state.selectedTag }
+                                    onChange={(e) => {
+                                        this.setState({ selectedTag: parseInt(e.target.value),
+                                            selectedTagName: e.nativeEvent.target[e.nativeEvent.target.selectedIndex].text,
+                                            validationError: e.target.value === '' ? 'Select Property' : ''});                                    
+                                    }}>
+                                {this.state.tags.map((tag) => <option key={tag.id} value={tag.id}>{tag.name}</option>)}
+                            </select>
+                            <div style={{color: 'red', marginTop: '5px'}}>
+                                {this.state.validationError}
+                            </div>
                         </div>
                         <div className="form-element">
                             <input type="text" id="tagValue" value={this.state.tagValue}
-                            onChange={this.handleTagValueChange} placeholder="Tag Value" />
+                            onChange={this.handleTagValueChange} placeholder="Value" />
                         </div>
                         <div className="form-actions row">
                             <input type="submit" id="submit" className="btn btn-primary" value="Add" disabled={!this.state.isAdded} />

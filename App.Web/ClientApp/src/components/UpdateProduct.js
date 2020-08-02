@@ -79,9 +79,6 @@ export default class UpdateProduct extends React.Component {
             },
             body: JSON.stringify(this.state.product)
           };
-
-          console.log("requeest options");
-          console.log(requestOptions);
     
           fetch('api/product/update-product/' + this.props.productId, requestOptions)
             .then(response => response.json())
