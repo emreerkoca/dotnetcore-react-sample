@@ -34,6 +34,64 @@ export class AddProduct extends Component {
         this.handleAddTagFormSubmit = this.handleAddTagFormSubmit.bind(this);
     }
 
+    getTags() {
+        fetch('api/product/get-tags')
+            .then(response => response.json())
+            .then(data => {
+                this.setState({tags: data});
+            });
+    };
+
+    getProductTags() {
+        if (this.props.productId) {
+            fetch('api/product/get-product-tags/' + this.props.productId,
+        {
+            method: 'GET',
+            headers: {}
+        })
+        .then(response => response.json())
+        .then(
+            (result) => {
+
+                console.log(result);
+
+                this.setState({
+                    productTags: result
+                });
+            }
+        );
+        }
+    }
+
+    componentDidMount() {
+        if (this.props.productId) {
+            fetch('api/product/get-product/' + this.props.productId,
+            {
+                method: 'GET',
+                headers: {}
+            })
+            .then(response => response.json())
+            .then(
+                (result) => {
+
+                    console.log(result);
+
+                    this.setState({
+                        id: result.id,
+                        name: result.name,
+                        price: result.price,
+                        isAdded: true
+                    });
+
+                    this.getTags();
+                    this.getProductTags();
+
+                    console.log(this.state);
+                }
+            );
+        }
+    }
+
     handleSubmit(e) {
         e.preventDefault();
 
@@ -50,11 +108,7 @@ export class AddProduct extends Component {
                 this.setState({id: result.id, isAdded: true});
 
 
-                fetch('api/product/get-tags')
-                    .then(response => response.json())
-                    .then(data => {
-                        this.setState({tags: data});
-                    });
+                this.getTags();
             },
             (error) => {
                 console.log(error);
@@ -83,9 +137,7 @@ export class AddProduct extends Component {
                     console.log(error);
                 }
           );
-        }
-  
-        
+        }      
     }
 
     handleAddTagFormSubmit(e) {
@@ -139,7 +191,8 @@ export class AddProduct extends Component {
                         onChange={this.handleProductPriceChange} placeholder="Price" />
                     </div>
                     <div className="form-actions row">
-                    <input type="submit" id="submit" className="btn btn-primary" value={this.state.isAdded ? "Update" : "Add" }/>
+                    { this.props.productId && <input type="button" onClick={this.handleGetProducts} value="Back to Products"/>}
+                    <input type="submit" id="submit" value={this.state.isAdded ? "Update" : "Add" }/>
                     </div>
                 </form>
                 { this.state.productTags.length > 0 && 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UpdateProduct from './UpdateProduct';
+import { AddProduct } from './AddProduct';
 
 export class GetProducts extends Component {
   static displayName = GetProducts.name;
@@ -143,7 +143,7 @@ export class GetProducts extends Component {
         );
       } else if (updateState) {
         return (
-          <UpdateProduct productId={productId} handleGetProducts={this.getProducts} ></UpdateProduct>
+          <AddProduct productId={productId} handleGetProducts={this.getProducts} ></AddProduct>
         );
       }
       

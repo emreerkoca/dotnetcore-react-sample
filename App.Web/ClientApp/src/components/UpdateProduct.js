@@ -25,7 +25,7 @@ export default class UpdateProduct extends React.Component {
         this.handleProductPriceChange = this.handleProductPriceChange.bind(this);
     }
 
-    componentDidMount() { console.log("Update product loaded!");
+    componentDidMount() {
        fetch('api/product/get-product/' + this.props.productId, UpdateProduct.requestOptions)
         .then(response => response.json())
         .then(
