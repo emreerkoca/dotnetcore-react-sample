@@ -9,5 +9,6 @@ namespace App.Core.Interfaces
     public interface IProductRepository : IRepository<Product>
     {
         Task<IReadOnlyList<Product>> GetProducts();
+        Task<IReadOnlyList<ProductTag>> GetProductTags(int productId);
     }
 }

@@ -21,6 +21,9 @@ namespace App.Infrastructure.Data
             return await _appDbContext.Product.Where(x => !x.isDeleted).ToListAsync();
         }
 
-
+        public async Task<IReadOnlyList<ProductTag>> GetProductTags(int productId)
+        {
+            return await _appDbContext.ProductTag.Where(x => x.ProductId == productId).ToListAsync();
+        }
     }
 }

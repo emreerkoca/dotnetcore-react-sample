@@ -58,11 +58,5 @@ namespace App.Infrastructure.Data
             return await _appDbContext.Set<T>()
                 .ToListAsync();
         }
-
-        public async Task<IReadOnlyList<T>> GetListByIdAsync(int id)
-        {
-            return await _appDbContext.Set<T>()
-                .Where(x => x.Id == id).ToListAsync();
-        }
     }
 }

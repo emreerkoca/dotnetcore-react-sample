@@ -29,6 +29,7 @@ export class AddProduct extends Component {
         this.handleProductNameChange = this.handleProductNameChange.bind(this);
         this.handleProductPriceChange = this.handleProductPriceChange.bind(this);
         this.handleTagValueChange = this.handleTagValueChange.bind(this);
+        this.handleGetProducts = this.handleGetProducts.bind(this);
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleAddTagFormSubmit = this.handleAddTagFormSubmit.bind(this);
@@ -43,6 +44,10 @@ export class AddProduct extends Component {
     };
 
     getProductTags() {
+        this.setState({
+            productTags: []
+        });
+
         if (this.props.productId) {
             fetch('api/product/get-product-tags/' + this.props.productId,
         {
@@ -52,15 +57,16 @@ export class AddProduct extends Component {
         .then(response => response.json())
         .then(
             (result) => {
-
-                console.log(result);
-
                 this.setState({
                     productTags: result
                 });
             }
         );
         }
+    }
+
+    handleGetProducts() {
+        this.props.handleGetProducts();
     }
 
     componentDidMount() {
@@ -73,9 +79,6 @@ export class AddProduct extends Component {
             .then(response => response.json())
             .then(
                 (result) => {
-
-                    console.log(result);
-
                     this.setState({
                         id: result.id,
                         name: result.name,
@@ -85,8 +88,6 @@ export class AddProduct extends Component {
 
                     this.getTags();
                     this.getProductTags();
-
-                    console.log(this.state);
                 }
             );
         }
@@ -124,8 +125,6 @@ export class AddProduct extends Component {
 
             AddProduct.requestOptions.body = JSON.stringify(requestBody);
 
-            console.log(AddProduct.requestOptions);
-
             fetch('api/product/update-product/' + this.state.id, AddProduct.requestOptions)
                 .then(response => response.json())
                 .then(
@@ -143,6 +142,7 @@ export class AddProduct extends Component {
     handleAddTagFormSubmit(e) {
         e.preventDefault();
 
+        AddProduct.requestOptions.method = "POST";
         AddProduct.requestOptions.body = JSON.stringify({
             TagId: this.state.selectedTag,
             ProductId: this.state.id,
